@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="backgroundStyle">
+  <div :class="className" :style="computedBackgroundStyle">
     <slot></slot>
   </div>
 </template>
@@ -25,7 +25,6 @@ export default {
       default: () => ({
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
       })
     },
     className: {
@@ -39,21 +38,11 @@ export default {
     }
   },
   computed: {
-    backgroundStyle() {
+    computedBackgroundStyle() {
       return {
         ...this.backgroundStyle,
         backgroundImage: this.imageUrl ? `url(${this.imageUrl})` : 'none'
       }
-    }
-  },
-  methods: {
-    checkImage(url) {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
-        img.src = url;
-      });
     }
   },
   async mounted() {
@@ -61,7 +50,7 @@ export default {
       // Try to load from configurations first
       const configImagePath = `${this.configPath}/${this.imageName}`;
       const configExists = await this.checkImage(configImagePath);
-      
+
       if (configExists) {
         this.imageUrl = configImagePath;
       } else {
@@ -76,6 +65,16 @@ export default {
       }
     } catch (error) {
       console.error(`Failed to load image: ${this.imageName}`, error);
+    }
+  },
+  methods: {
+    checkImage(url) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = url;
+      });
     }
   }
 }
