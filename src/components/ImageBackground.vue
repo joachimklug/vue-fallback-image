@@ -1,5 +1,5 @@
 <template>
-  <div class="image-background" :style="backgroundStyle">
+  <div :class="className" :style="backgroundStyle">
     <slot></slot>
   </div>
 </template>
@@ -19,6 +19,18 @@ export default {
     assetPath: {
       type: String,
       default: '/assets'
+    },
+    backgroundStyle: {
+      type: Object,
+      default: () => ({
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      })
+    },
+    className: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -29,10 +41,8 @@ export default {
   computed: {
     backgroundStyle() {
       return {
-        backgroundImage: this.imageUrl ? `url(${this.imageUrl})` : 'none',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        ...this.backgroundStyle,
+        backgroundImage: this.imageUrl ? `url(${this.imageUrl})` : 'none'
       }
     }
   },
@@ -70,12 +80,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.image-background {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 200px;
-}
-</style> 

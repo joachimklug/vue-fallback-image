@@ -11,6 +11,8 @@ A Vue.js component that provides a flexible image background system with configu
 - Responsive background sizing
 - Error handling for missing images
 - Configurable image paths
+- Fully customizable background styles
+- Custom CSS class support
 
 ## Installation
 
@@ -28,7 +30,7 @@ npm install
 
 ```vue
 <template>
-  <!-- Basic usage with default paths -->
+  <!-- Basic usage with default styles -->
   <ImageBackground imageName="your-image.jpg">
     <div>This content will be displayed over the background image</div>
   </ImageBackground>
@@ -41,6 +43,38 @@ npm install
   >
     <div>Content with custom image paths</div>
   </ImageBackground>
+
+  <!-- Custom background styles -->
+  <ImageBackground 
+    imageName="your-image.jpg"
+    :backgroundStyle="{
+      backgroundSize: 'contain',
+      backgroundPosition: 'top left',
+      backgroundColor: '#f0f0f0'
+    }"
+  >
+    <div>Content with custom background styles</div>
+  </ImageBackground>
+
+  <!-- Custom CSS class -->
+  <ImageBackground 
+    imageName="your-image.jpg"
+    className="custom-background"
+  >
+    <div>Content with custom CSS class</div>
+  </ImageBackground>
+
+  <!-- Combined styles and class -->
+  <ImageBackground 
+    imageName="your-image.jpg"
+    className="custom-background"
+    :backgroundStyle="{
+      backgroundSize: 'contain',
+      backgroundPosition: 'top left'
+    }"
+  >
+    <div>Content with both custom styles and class</div>
+  </ImageBackground>
 </template>
 
 <script>
@@ -52,6 +86,13 @@ export default {
   }
 }
 </script>
+
+<style>
+.custom-background {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+</style>
 ```
 
 ## Props
@@ -61,6 +102,21 @@ export default {
 | imageName | String | Yes | - | The name of the image file to load |
 | configPath | String | No | '/configurations' | The path to look for configuration images |
 | assetPath | String | No | '/assets' | The fallback path for asset images |
+| backgroundStyle | Object | No | See below | Custom CSS styles for the background |
+| className | String | No | '' | Custom CSS class to apply to the component |
+
+## Default Background Styles
+
+The component provides these default styles if none are specified:
+```javascript
+{
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat'
+}
+```
+
+You can override these defaults by providing your own `backgroundStyle` object. The component will automatically add the `backgroundImage` property based on the loaded image.
 
 ## How it Works
 
