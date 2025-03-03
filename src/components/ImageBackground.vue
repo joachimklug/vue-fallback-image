@@ -11,6 +11,14 @@ export default {
     imageName: {
       type: String,
       required: true
+    },
+    configPath: {
+      type: String,
+      default: '/configurations'
+    },
+    assetPath: {
+      type: String,
+      default: '/assets'
     }
   },
   data() {
@@ -41,17 +49,17 @@ export default {
   async mounted() {
     try {
       // Try to load from configurations first
-      const configPath = `/configurations/${this.imageName}`;
-      const configExists = await this.checkImage(configPath);
+      const configImagePath = `${this.configPath}/${this.imageName}`;
+      const configExists = await this.checkImage(configImagePath);
       
       if (configExists) {
-        this.imageUrl = configPath;
+        this.imageUrl = configImagePath;
       } else {
         // Fallback to assets
-        const assetsPath = `/assets/${this.imageName}`;
-        const assetExists = await this.checkImage(assetsPath);
+        const assetImagePath = `${this.assetPath}/${this.imageName}`;
+        const assetExists = await this.checkImage(assetImagePath);
         if (assetExists) {
-          this.imageUrl = assetsPath;
+          this.imageUrl = assetImagePath;
         } else {
           console.error(`Neither configuration nor asset image found for: ${this.imageName}`);
         }

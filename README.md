@@ -10,6 +10,7 @@ A Vue.js component that provides a flexible image background system with configu
 - Support for child components via slots
 - Responsive background sizing
 - Error handling for missing images
+- Configurable image paths
 
 ## Installation
 
@@ -19,7 +20,7 @@ npm install
 
 ## Usage
 
-1. Place your images in the following directories:
+1. Place your images in the following directories (default paths):
    - Configuration images: `public/configurations/`
    - Fallback images: `public/assets/`
 
@@ -27,9 +28,18 @@ npm install
 
 ```vue
 <template>
+  <!-- Basic usage with default paths -->
   <ImageBackground imageName="your-image.jpg">
-    <!-- Your content here -->
     <div>This content will be displayed over the background image</div>
+  </ImageBackground>
+
+  <!-- Custom paths -->
+  <ImageBackground 
+    imageName="your-image.jpg"
+    configPath="/custom/config/path"
+    assetPath="/custom/asset/path"
+  >
+    <div>Content with custom image paths</div>
   </ImageBackground>
 </template>
 
@@ -44,11 +54,19 @@ export default {
 </script>
 ```
 
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| imageName | String | Yes | - | The name of the image file to load |
+| configPath | String | No | '/configurations' | The path to look for configuration images |
+| assetPath | String | No | '/assets' | The fallback path for asset images |
+
 ## How it Works
 
 The component follows this logic:
-1. First attempts to load the image from the configurations folder
-2. If the configuration image is not found, falls back to the assets folder
+1. First attempts to load the image from the configuration path (default: `/configurations/`)
+2. If the configuration image is not found, falls back to the asset path (default: `/assets/`)
 3. If neither image is found, logs an error to the console
 
 ## Development
